@@ -22,8 +22,12 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
+        name: Get short SHA
+        id: short-sha
+        run: echo "::set-output name=sha::$(echo ${GITHUB_SHA::7})"
+      -
         name: Build and push
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: boomer12/actions:${{ github.sha.substring(0,7) }}
+          tags: boomer12/actions:${{ steps.short-sha.outputs.sha }}
