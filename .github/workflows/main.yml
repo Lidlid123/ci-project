@@ -30,7 +30,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: boomer12/actions:${{ env.sha }}
+          tags: <myrepo>${{ env.sha }}
       -
         name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -67,8 +67,8 @@ jobs:
             sleep 5
 
             # Pull the new image and run a new container with it
-            sudo docker pull boomer12/actions:${{ env.sha }}
-            sudo docker run -d -p 80:80 boomer12/actions:${{ env.sha }}
+            sudo docker pull <myrepo>:${{ env.sha }}
+            sudo docker run -d -p 80:80 <myrepo>:${{ env.sha }}
       -
         name: Update EC2 security group to revoke SSH from runner IP
         run: |
