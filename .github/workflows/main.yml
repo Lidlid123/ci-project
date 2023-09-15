@@ -57,7 +57,15 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
+          script_stopfirstlineonerror: true  # Stop if any command fails
           script: |
+            # Stop and remove the old container if it exists
+            if [ $(sudo docker ps -q -f ancestor=boomer12/actions) ]; then
+                sudo docker stop $(sudo docker ps -q -f ancestor=boomer12/actions)
+                sudo docker rm $(sudo docker ps -a -q -f ancestor=boomer12/actions)
+            fi
+
+            # Pull the new image and run a new container with it
             sudo docker pull boomer12/actions:${{ env.sha }}
             sudo docker run -d -p 80:80 boomer12/actions:${{ env.sha }}
       -
