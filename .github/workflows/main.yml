@@ -26,4 +26,4 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: boomer12/actions:${{ github.sha }}
+          tags: boomer12/actions:${{ github.sha.substring(0,7) }}
